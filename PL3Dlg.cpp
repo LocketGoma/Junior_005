@@ -318,7 +318,7 @@ void CPL3Dlg::OnBnClickedButton3()
 		//InfixToPostfix class생성
 		topostfix = new InfixToPostfix(expression_editbox);
 		//임시tmp에 <표기법변환/중간코드>에 띄어줄 메세지 받어옴
-		CString tmp = topostfix->getMessage_Postfix();
+		CString tmp = topostfix->getMessage_Postfix();						//<- 일단 요기까지 됩니다?
 		//기존것 내용지우고 받아온 메세지 집어넣음
 		intermediate_code_editbox.Format(_T(""));
 		intermediate_code_editbox.Append(tmp);
@@ -365,7 +365,7 @@ void CPL3Dlg::OnBnClickedButton4()
 		}
 
 		//PostfixToIntermediate class 생성
-		tointermediate = new PostfixToIntermediate(topostfix->getPostfix());
+		tointermediate = new PostfixToIntermediate(topostfix->getPostfix());		//lv2. 왜 input이 잘못될까.
 		//기존것 내용지우고 받아온 메세지 집어넣음
 		intermediate_code_editbox.Format(_T(""));
 

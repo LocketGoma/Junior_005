@@ -376,7 +376,7 @@ int InfixToPostfix::Is_open_parentheses(int index){  //---------------------
 	}
 
 	//seq 3: )
-	for (; i < len; i++){
+	for (; i < len; i++){						//lv2 다시볼것.
 
 		//공백 넘기기
 		if (tmpbuf[i] == ' ' || tmpbuf[i] == '\t'){
@@ -386,11 +386,11 @@ int InfixToPostfix::Is_open_parentheses(int index){  //---------------------
 //			tmp_str.AppendChar(' ');
 //			tmp_str.Append(oper[this_op_num]);
 			tmp_str.AppendChar(tmpbuf[i]);
-//			return i;
+			return i;
 		}
 		//괄호 잘못됨
 		else{ //---- 나중에 재점검 할것! ----
-			errnum = 7;
+			errnum = 2;
 			return i;
 		}
 	}
@@ -523,7 +523,7 @@ int InfixToPostfix::Is_minus_con(int index){
 
 
 //올바른 식들 후위식으로 넘겨줌
-std::list<CStringA> InfixToPostfix::getPostfix(){
+std::list<CStringA> InfixToPostfix::getPostfix(){	//lv2. 문제발생.
 	return listofPostfix;
 }
 

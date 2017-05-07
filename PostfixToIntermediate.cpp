@@ -10,7 +10,7 @@
 #include "stdafx.h"
 
 //생성자
-PostfixToIntermediate::PostfixToIntermediate(std::list<CStringA> Postfix_tmp){
+PostfixToIntermediate::PostfixToIntermediate(std::list<CStringA> Postfix_tmp){		//lv2. input이 잘못되네?
 	Postfix = Postfix_tmp;
 	//연산자 초기화
 	oper[0] = "IF";
@@ -29,12 +29,12 @@ void PostfixToIntermediate::make_Intermediate(){
 	while (!Postfix.empty())
 	{
 		//앞부분 line에 복사
-		CStringA line = Postfix.front().GetString();  //--- 제대로 안 들어갔었음.
+		CStringA line = Postfix.front().GetString();  //--- 제대로 안 들어감.
 		//list item하나 꺼내기
 		Postfix.pop_front();
-		//라인 길이
-		linelen = line.GetLength();
-		//CStrinA char*로 사용하기 위해
+		//라인 길이						// 문제 찾음. ) 에서 자동으로 끊김.
+		linelen = line.GetLength();		// lv2. 문제 : ((3 MINUS 2) MINUS 1) = 12
+		//CStrinA char*로 사용하기 위해	//	(1 MINUS (3 MINUS 2)) = 21, <- 이게 맞음.
 		linepointer = line.GetBuffer();
 		int i = 0;
 		//프로그램 시작 부분
@@ -62,7 +62,7 @@ void PostfixToIntermediate::make_Intermediate(){
 int PostfixToIntermediate::Is_open_parentheses(int index){//-------------------------또?
 	index++;
 	bool is_fact = false;
-
+	//* 현 문제, 전방 괄호 2개일때 에러.
 	//term1 확인
 
 	//괄호 인지 확인
@@ -70,14 +70,13 @@ int PostfixToIntermediate::Is_open_parentheses(int index){//--------------------
 		index = Is_open_parentheses(index);
 	}
 	//lv2 팩토리얼인지 확인
-	else if (isalpha(linepointer[index+1])) {
-		if (Is_fact(index+1)) {
-			is_fact = true;
-			index += Is_fact(index);
-		}
-		else
-			index = Is_val(index);
-	}
+//	else if (isalpha(linepointer[index+1])) {		//lv2. 버그같은데 +1 하고 있음. 이거 없에기.
+//		if (Is_fact(index+1)) {
+//			is_fact = true;
+//		}
+//		else
+//			index = Is_val(index);
+//	}
 	//변수 인지 확인
 	else if (isalpha(linepointer[index]) || linepointer[index] == '-'){
 		index = Is_val(index);
@@ -87,13 +86,14 @@ int PostfixToIntermediate::Is_open_parentheses(int index){//--------------------
 		index = Is_con(index);
 	}
 	index += 2;
-	if (is_fact) {	//lv2 팩토리얼 재점검
-		index -= 2;
-	}
+//	if (is_fact) {	//lv2 팩토리얼 재점검 
+//		index--;
+//		is_fact = false;
+//	}
 
 	//function 확인
 	index = Is_op(index);
-	index++;
+//	index++;
 	//term2 확인
 
 	//괄호 인지 확인
@@ -108,7 +108,7 @@ int PostfixToIntermediate::Is_open_parentheses(int index){//--------------------
 	else if (isdigit(linepointer[index])){
 		index = Is_con(index);
 	}
-	index ++;
+//	index ++;
 
 
 
@@ -170,7 +170,7 @@ int PostfixToIntermediate::Is_op(int index){
 
 		//현재 index 와 연산자 길이의 합이 전체 라인 길이보다 작아야된다.
 		//안그러면 실제 짧은 연산자인데 긴 연산자 찾다가 메모리 덤프 날수 있음
-		if (index + OP_len < linelen){
+		if (index + OP_len < linelen){	// lv2. linelen = '각 변수' 개수. 글자수아님. 요게 틀리네.
 			correct = true;
 			for (j = 0; j < OP_len; j++){
 				if (linepointer[index + j] != oper[i][j]){
@@ -186,7 +186,7 @@ int PostfixToIntermediate::Is_op(int index){
 		}
 	}
 	Intermediate.Append("\r\n");
-	return index + j;		// 런타임 에러 체크 (-1 삭제)
+	return index + j + 1 ;		// 런타임 에러 체크 (-1 제거)
 }
 //lv2 팩토리얼 체킹용
 bool PostfixToIntermediate::Is_fact(int index) {

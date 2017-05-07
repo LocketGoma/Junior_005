@@ -48,8 +48,8 @@ private:
 	//연산자 인가?
 	int Is_op(int index);
 
-	//lv2 팩토리얼
-	int Is_fact(int index);
+	//lv2 팩토리얼 체크
+	bool Is_fact(int index);
 
 	//연산자 모아놓은 배열
 	char *oper[4];			//lv2
