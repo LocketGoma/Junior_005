@@ -70,13 +70,13 @@ int PostfixToIntermediate::Is_open_parentheses(int index){//--------------------
 		index = Is_open_parentheses(index);
 	}
 	//lv2 팩토리얼인지 확인
-//	else if (isalpha(linepointer[index+1])) {		//lv2. 버그같은데 +1 하고 있음. 이거 없에기.
-//		if (Is_fact(index+1)) {
-//			is_fact = true;
-//		}
-//		else
-//			index = Is_val(index);
-//	}
+	else if (isalpha(linepointer[index+1])) {		//lv2. 버그같은데 +1 하고 있음. 이거 없에기.
+		if (Is_fact(index+1)) {
+			is_fact = true;
+		}
+		else
+			index = Is_val(index);
+	}
 	//변수 인지 확인
 	else if (isalpha(linepointer[index]) || linepointer[index] == '-'){
 		index = Is_val(index);
@@ -86,10 +86,10 @@ int PostfixToIntermediate::Is_open_parentheses(int index){//--------------------
 		index = Is_con(index);
 	}
 	index += 2;
-//	if (is_fact) {	//lv2 팩토리얼 재점검 
-//		index--;
-//		is_fact = false;
-//	}
+	if (is_fact) {	//lv2 팩토리얼 재점검 
+		index--;
+		is_fact = false;
+	}
 
 	//function 확인
 	index = Is_op(index);
